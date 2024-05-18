@@ -1,0 +1,45 @@
+.upgradesContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-right: 1px solid gray;
+  border-top: 1px solid gray;
+  height: 100vh;
+}
+
+.upgradeContent {
+  display: flex;
+  padding: 2rem;
+  border-bottom: 1px solid gray;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.leftContent {
+  display: flex;
+  align-items: center;
+}
+
+p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+}
+
+img {
+  margin-right: 1rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+.desc {
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.amount {
+  display: flex;
+  align-items: center;
+}
