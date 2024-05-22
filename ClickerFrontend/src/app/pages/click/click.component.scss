@@ -3,6 +3,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  position: relative;
 }
 
 .clickButton {
@@ -11,9 +13,42 @@
   align-items: center;
   width: 20rem;
   height: 20rem;
+  background: transparent;
+  border: none;  // Makes the button border invisible
+  cursor: pointer;
+  outline: none;  // Removes focus outline
 }
 
 img {
   width: 80%;
   height: 80%;
+  transition: transform 0.2s ease;  // Smooth transition for resizing
+}
+
+.paperImage {
+  width: 100%;
+  height: 100%;
+}
+
+.shrink {
+  transform: scale(0.9);  // Shrinks the image to 90% of its size
+}
+
+.score {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3rem;
+  margin-top: 1rem;
+}
+
+.scorePC {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  margin-top: 4.5rem;
+  color: gray;
 }

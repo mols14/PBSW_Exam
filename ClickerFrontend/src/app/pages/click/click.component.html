@@ -1,6 +1,7 @@
 <div class="clickContainer">
-  <button class="clickButton">
-    <img src="assets/paper.png">
+  <p class="score">{{user.totalScore}} papers</p>
+  <p class="scorePC">{{calculatePapersPerClick()}} papers per click</p>
+  <button class="clickButton" (click)="incrementScore()" (mousedown)="shrinkImage()" (mouseup)="resetImage()" (mouseleave)="resetImage()">
+    <img src="assets/paper.png" class="paperImage">
   </button>
 </div>
-

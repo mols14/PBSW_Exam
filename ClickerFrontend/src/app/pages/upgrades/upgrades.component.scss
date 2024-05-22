@@ -13,6 +13,15 @@
   border-bottom: 1px solid gray;
   width: 100%;
   justify-content: space-between;
+  transition: background-color 0.2s ease;  // Smooth transition for the background color change
+}
+
+.upgradeContent.clicked {
+  background-color: #e0e0e0;  // Light grey background to indicate selection
+}
+
+.upgradeContent.cannotAfford {
+  background-color: #ffcccc;  // Light red background to indicate lack of funds
 }
 
 .leftContent {
@@ -26,6 +35,20 @@ p {
   justify-content: center;
   text-align: center;
   margin: 0;
+}
+
+.cost {
+  font-size: 0.8rem;  // Smaller font size for cost
+  color: gray;
+  display: flex;
+  align-items: center;  // Aligns image with text
+}
+
+.costImage {
+  height: 1rem;  // Small size for the cost image
+  width: 1rem;
+  margin-right: 0.1rem;  // Space between the image and the text
+  margin-top: 0.1rem;
 }
 
 img {

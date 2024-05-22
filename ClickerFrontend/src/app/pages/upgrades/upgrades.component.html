@@ -1,26 +1,16 @@
 <div class="upgradesContainer">
-  <div class="upgradeContent">
+  <div class="upgradeContent" *ngFor="let upgrade of user.upgrades"
+       (click)="purchaseUpgrade(upgrade.id)"
+       [class.clicked]="activeUpgradeId === upgrade.id"
+       [class.cannotAfford]="cannotAffordId === upgrade.id">
     <div class="leftContent">
-      <img src="assets/upgrade.png">
-      <p>Upgrade 1</p>
+      <img src="{{upgrade.img}}">
+      <div class="costWrapper">
+        <p>{{upgrade.name}}</p>
+        <p class="cost"><img src="assets/paper.png" class="costImage"> {{upgrade.cost}} papers</p>
+      </div>
     </div>
-    <p class="desc">Increases score pr click by 1</p>
-    <p class="amount">14</p>
-  </div>
-  <div class="upgradeContent">
-    <div class="leftContent">
-      <img src="assets/upgrade.png">
-      <p>Upgrade 2</p>
-    </div>
-    <p class="desc">Increases score pr click by 10</p>
-    <p class="amount">6</p>
-  </div>
-  <div class="upgradeContent">
-    <div class="leftContent">
-      <img src="assets/upgrade.png">
-      <p>Upgrade 3</p>
-    </div>
-    <p class="desc">Increases score pr click by 30</p>
-    <p class="amount">1</p>
+    <p class="desc">{{upgrade.desc}}</p>
+    <p class="amount">{{upgrade.amount}}</p>
   </div>
 </div>
