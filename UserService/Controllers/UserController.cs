@@ -73,4 +73,7 @@ public class UserController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+    
+    //TODO add put method that update upgrades
+    //TODO add put method that update totalScore
 }
