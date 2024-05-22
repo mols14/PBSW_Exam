@@ -1,0 +1,95 @@
+﻿version: '3.7'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  APIGateway:
+    image: apigateway
+    build:
+      context: .
+      dockerfile: ./APIGateway/Dockerfile
+    ports:
+      - "5206:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  AuthorisationService:
+    image: authorisationservice
+    build:
+      context: .
+      dockerfile: ./AuthorisationService/Dockerfile
+    depends_on:
+      - APIGateway
+    ports:
+      - "9094:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  UserService:
+    image: userservice
+    build:
+      context: .
+      dockerfile: ./UserService/Dockerfile
+    depends_on:
+      - AuthorisationService
+    ports:
+      - "9093:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  
+  seq:
+    image: datalust/seq:latest
+    ports:
+      - "5341:5341"
+      - "5342:80"
+    volumes:
+      - seq_data:/data
+    networks:
+      - local_network
+    environment:
+      ACCEPT_EULA: "Y"
+
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=zipkin-storage
+      - MYSQL_USER=zipkin
+      - MYSQL_PASS=zipkin
+    depends_on:
+      - zipkin-storage
+    networks:
+      - local_network
+
+  zipkin-storage:
+    image: openzipkin/zipkin-mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - zipkin_data:/mysql/data
+    networks:
+      - local_network
+    environment:
+      - MYSQL_USER=zipkin
+
+volumes:
+  seq_data:
+  zipkin_data:
+networks:
+  local_network:
+    driver: bridge      
