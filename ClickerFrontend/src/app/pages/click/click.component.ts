@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-click',
@@ -11,7 +12,7 @@ export class ClickComponent {
     return this.userService.getUser();
   }
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   // This method now includes incrementing the score and shrinking the image
   incrementScore() {
@@ -47,4 +48,14 @@ export class ClickComponent {
       element.classList.remove('shrink');
     }
   }
+
+  navigateToPage(page: string) {
+    this.router.navigate(['/' + page]);
+  }
+
+  logout() {
+    //handle logout here
+    this.navigateToPage('login-page')
+  }
+
 }
