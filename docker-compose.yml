@@ -29,8 +29,8 @@ services:
     networks:
       - local_network
 
-  APIGateway:
-    image: apigateway
+  apigateway:
+    image: mols14/apigateway:latest
     build:
       context: .
       dockerfile: ./APIGateway/Dockerfile
@@ -39,8 +39,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
 
-  AuthorisationService:
-    image: authorisationservice
+  authorisationservice:
+    image: mols14/authorisationservice:latest
     build:
       context: .
       dockerfile: ./AuthorisationService/Dockerfile
@@ -51,8 +51,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
 
-  UserService:
-    image: userservice
+  userservice:
+    image: mols14/userservice:latest
     build:
       context: .
       dockerfile: ./UserService/Dockerfile
