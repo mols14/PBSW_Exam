@@ -35,7 +35,7 @@ jobs:
 
       # Docker build and push steps using docker-compose
       - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.SECRET_USER }}
           password: ${{ secrets.SECRET_PASS }}
