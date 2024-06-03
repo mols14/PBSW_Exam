@@ -4,7 +4,7 @@ export class Upgrade {
   name: string;
   desc: string;
   amount: number;
-  cost: number;  // New property for the cost of the upgrade
+  cost: number;
 
   constructor(id: number, img: string, name: string, desc: string, amount: number, cost: number) {
     this.id = id;
