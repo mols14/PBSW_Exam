@@ -11,12 +11,12 @@ namespace UserService.Configs;
 
 public static class DependencyInjectionConfig
 {
-    public static void ConfigureDi(this IServiceCollection services, int userId)
+    public static void ConfigureDi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton(new MessageClient(RabbitHutch.CreateBus("host=rabbitmq;port=5672;virtualHost=/;username=guest;password=guest")));
         services.AddDbContext<DatabaseContext>(options =>
         {
-            options.UseInMemoryDatabase("UserDb");
+            options.UseSqlServer("Server=user-db;Database=userDb;User Id=SA;Password=uhohst1nky!;Trusted_Connection=False;TrustServerCertificate=True;");
         });
         
         services.AddScoped<IUserRepository, UserRepository>();

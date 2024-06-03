@@ -38,6 +38,8 @@ services:
       - "5206:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - local_network
 
   authorisationservice:
     image: mols14/authorisationservice:latest
@@ -48,6 +50,8 @@ services:
       - apigateway
     ports:
       - "9094:80"
+    networks:
+      - local_network
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
 
@@ -58,8 +62,11 @@ services:
       dockerfile: ./UserService/Dockerfile
     depends_on:
       - authorisationservice
+      - user-db
     ports:
       - "9093:80"
+    networks:
+      - local_network
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
   

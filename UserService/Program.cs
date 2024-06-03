@@ -1,4 +1,5 @@
 using UserService.Configs;
+using UserService.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,8 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.ConfigureDi(1);
+builder.Services.ConfigureDi(builder.Configuration);
+builder.Services.AddDbContext<DatabaseContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

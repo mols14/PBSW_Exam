@@ -6,7 +6,11 @@ namespace UserService.Core.Services;
 public class DatabaseContext : DbContext
 {
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+    {}
+    
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.UseSqlServer("Server=user-db;Database=userDb;User Id=SA;Password=uhohst1nky!;Trusted_Connection=False;TrustServerCertificate=True;");
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -17,4 +21,5 @@ public class DatabaseContext : DbContext
     }
     
     public DbSet<User> Users { get; set; }
+    public DbSet<Upgrade> Upgrades { get; set; }
 }

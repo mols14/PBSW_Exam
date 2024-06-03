@@ -44,7 +44,7 @@ public class CreateUserHandler : BackgroundService
         Console.WriteLine("CreateUserHandler is up and running");
 
         var messageClient = new MessageClient(
-            RabbitHutch.CreateBus("host=rabbitmq;port=5672;virtualHost=/;username=guest;password=guest"));
+            RabbitHutch.CreateBus("host=rabbitmq;port=5672;virtualHost=/;username=SA;password=uhohst1nky!"));
 
         var subject = "CreateUser";
         await messageClient.Listen<CreateUser>(HandleCreateUser, subject);
