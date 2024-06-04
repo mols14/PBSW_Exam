@@ -56,7 +56,8 @@ jobs:
       - name: Set up Kubeconfig
         run: |
           mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBECONFIG }}"
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+          cat $HOME/.kube/config
 
       - name: Apply Kubernetes manifests
         run: |
