@@ -1,11 +1,9 @@
-# This workflow will build, test and push a Docker image to Docker Hub
-
-name: .NET Core with Docker functionality
+name: .NET Core with Docker and Kubernetes Deployment
 
 on:
   push:
-    branches: [ "master"]
-    
+    branches: [ "master" ]
+
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
@@ -19,16 +17,19 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 7.x
+
       - name: Restore dependencies
         run: dotnet restore
+
       - name: Build
         run: dotnet build --no-restore
+
       # - name: Test
-      #   run: dotnet test UnitTests --no-build --verbosity normal ## this specifies to use unitTests from the projects own collection
+      #   run: dotnet test UnitTests --no-build --verbosity normal
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/dotnet@master
-        continue-on-error: true # ensures the workflow continues even if Snyk finds vulnerabilities (for demo purposes)
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -45,3 +46,35 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml push
+
+      # Set up Kubernetes
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Set up Kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f k8s/seq-pvc.yaml
+          kubectl apply -f k8s/zipkin-storage-pvc.yaml
+          kubectl apply -f k8s/mssql-pvc.yaml
+          kubectl apply -f k8s/mssql-deployment.yaml
+          kubectl apply -f k8s/mssql-service.yaml
+          kubectl apply -f k8s/zipkin-storage-deployment.yaml
+          kubectl apply -f k8s/zipkin-storage-service.yaml
+          kubectl apply -f k8s/rabbitmq-deployment.yaml
+          kubectl apply -f k8s/rabbitmq-service.yaml
+          kubectl apply -f k8s/seq-deployment.yaml
+          kubectl apply -f k8s/seq-service.yaml
+          kubectl apply -f k8s/zipkin-deployment.yaml
+          kubectl apply -f k8s/zipkin-service.yaml
+          kubectl apply -f k8s/userservice-deployment.yaml
+          kubectl apply -f k8s/userservice-service.yaml
+          kubectl apply -f k8s/authorisationservice-deployment.yaml
+          kubectl apply -f k8s/authorisationservice-service.yaml
+          kubectl apply -f k8s/apigateway-deployment.yaml
+          kubectl apply -f k8s/apigateway-service.yaml

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zipkin-storage-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zipkin-storage
+  template:
+    metadata:
+      labels:
+        app: zipkin-storage
+    spec:
+      containers:
+        - name: zipkin-storage
+          image: openzipkin/zipkin-mysql
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_USER
+              value: "zipkin"
+          volumeMounts:
+            - name: zipkin-storage
+              mountPath: /mysql/data
+  volumes:
+    - name: zipkin-storage
+      persistentVolumeClaim:
+        claimName: zipkin-storage-pvc

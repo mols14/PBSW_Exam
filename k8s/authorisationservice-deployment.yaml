@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authorisationservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authorisationservice
+  template:
+    metadata:
+      labels:
+        app: authorisationservice
+    spec:
+      containers:
+        - name: authorisationservice
+          image: mols14/authorisationservice:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Development"
