@@ -17,32 +17,31 @@ public class AuthorisationController : ControllerBase
         _authorisationService = authorisationService;
     }
 
-    [HttpPost]
-    [Route("Register")]
+    [HttpPost("Register")]
     public async Task<IActionResult> Register([FromBody] CreateAuthorisationDto dto)
     {
         try
         {
             await _authorisationService.Register(dto);
-            return StatusCode(201, "Successfully registered");
+            return StatusCode(201, new { message = "Successfully registered" }); // Return JSON response
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(new { error = e.Message }); // Return JSON error response
         }
     }
 
-    [HttpPost]
-    [Route("Login")]
+    [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
         try
         {
-            return Ok(await _authorisationService.Login(dto));
+            var token = await _authorisationService.Login(dto);
+            return Ok(new { token });
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return Unauthorized(new { error = e.Message });
         }
     }
 

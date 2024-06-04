@@ -10,4 +10,5 @@ public interface IUserRepository
     public Task<PaginatedResult<User>> GetAllUsers(int pageNumber, int pageSize);
     public Task AddUser(User user);
     public Task DeleteUser(int userId);
+    public Task Update(User user);
 }

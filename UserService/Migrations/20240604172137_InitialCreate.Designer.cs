@@ -12,7 +12,7 @@ using UserService.Core.Services;
 namespace UserService.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240601030459_InitialCreate")]
+    [Migration("20240604172137_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -35,21 +35,6 @@ namespace UserService.Migrations
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
-
-                    b.Property<int>("Cost")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Desc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Img")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");

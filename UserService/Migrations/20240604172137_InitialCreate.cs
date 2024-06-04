@@ -36,11 +36,7 @@ namespace UserService.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Img = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Desc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
-                    Cost = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

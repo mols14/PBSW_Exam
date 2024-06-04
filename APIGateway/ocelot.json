@@ -7,7 +7,8 @@
       "//UserService": "UserService",
       "UpstreamPathTemplate": "/api/User/AddUser",
       "UpstreamHttpMethod": [
-        "POST"
+        "POST",
+        "OPTIONS"
       ],
       "DownstreamPathTemplate": "/api/User/AddUser",
       "DownstreamScheme": "http",
@@ -21,7 +22,8 @@
     {
       "UpstreamPathTemplate": "/api/User/GetUsers",
       "UpstreamHttpMethod": [
-        "GET"
+        "GET",
+        "OPTIONS"
       ],
       "DownstreamPathTemplate": "/api/User/GetUsers",
       "DownstreamScheme": "http",
@@ -33,18 +35,18 @@
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
+        "AllowedScopes": []
       }
     },
     {
-      "UpstreamPathTemplate": "/api/User/{id}",
+      "UpstreamPathTemplate": "/api/User/GetUserById/{id}",
       "UpstreamHttpMethod": [
         "GET",
         "PUT",
-        "DELETE"
+        "DELETE",
+        "OPTIONS"
       ],
-      "DownstreamPathTemplate": "/api/User/{id}",
+      "DownstreamPathTemplate": "/api/User/GetUserById/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -54,15 +56,34 @@
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/User/UpdateUser/{id}",
+      "UpstreamHttpMethod": [
+        "PUT",
+        "OPTIONS"
+      ],
+      "DownstreamPathTemplate": "/api/User/UpdateUser/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "UserService",
+          "Port": 80
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "dev",
+        "AllowedScopes": []
       }
     },
     {
       "//AuthorisationService": "AuthorisationService",
       "UpstreamPathTemplate": "/api/Authorisation/Register",
       "UpstreamHttpMethod": [
-        "POST"
+        "POST",
+        "OPTIONS"
       ],
       "DownstreamPathTemplate": "/api/Authorisation/Register",
       "DownstreamScheme": "http",
@@ -76,7 +97,8 @@
     {
       "UpstreamPathTemplate": "/api/Authorisation/Login",
       "UpstreamHttpMethod": [
-        "POST"
+        "POST",
+        "OPTIONS"
       ],
       "DownstreamPathTemplate": "/api/Authorisation/Login",
       "DownstreamScheme": "http",
@@ -90,7 +112,8 @@
     {
       "UpstreamPathTemplate": "/api/Authorisation/ValidateToken",
       "UpstreamHttpMethod": [
-        "GET"
+        "GET",
+        "OPTIONS"
       ],
       "DownstreamPathTemplate": "/api/Authorisation/ValidateToken",
       "DownstreamScheme": "http",
@@ -102,181 +125,22 @@
       ]
     },
     {
-      "//TweetService": "TweetService",
-      "UpstreamPathTemplate": "/api/Tweet",
-      "UpstreamHttpMethod": [
-        "GET"
-      ],
-      "DownstreamPathTemplate": "/api/Tweet",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "TweetService",
-          "Port": 80
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
-      }
-    },
-    {
-      "UpstreamPathTemplate": "/api/Tweet/{id}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "PUT",
-        "DELETE"
-      ],
-      "DownstreamPathTemplate": "/api/Tweet/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "TweetService",
-          "Port": 80
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
-      }
-    },
-    {
-      "UpstreamPathTemplate": "/api/Tweet",
-      "UpstreamHttpMethod": [
-        "POST"
-      ],
-      "DownstreamPathTemplate": "/api/Tweet",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "TweetService",
-          "Port": 80
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
-      }
-    },
-    {
-      "//CommentService": "CommentService",
-      "UpstreamPathTemplate": "/api/Comment/{postId}",
-      "UpstreamHttpMethod": [
-        "GET"
-      ],
-      "DownstreamPathTemplate": "/api/Comment/{postId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "CommentService",
-          "Port": 80
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
-      }
-    },
-    {
-      "UpstreamPathTemplate": "/api/Comment/{id}",
+      "UpstreamPathTemplate": "/api/User/UpdateUserUpgrades/{userId}",
       "UpstreamHttpMethod": [
         "PUT",
-        "DELETE"
+        "OPTIONS"
       ],
-      "DownstreamPathTemplate": "/api/Comment/{id}",
+      "DownstreamPathTemplate": "/api/User/UpdateUserUpgrades/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "CommentService",
+          "Host": "UserService",
           "Port": 80
         }
       ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
-      }
-    },
-    {
-      "UpstreamPathTemplate": "/api/Comment",
-      "UpstreamHttpMethod": [
-        "POST"
-      ],
-      "DownstreamPathTemplate": "/api/Comment",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "CommentService",
-          "Port": 80
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
-      }
-    },
-    {
-      "UpstreamPathTemplate": "/api/Comment/DeleteCommentsOnPost/{postId}",
-      "UpstreamHttpMethod": [
-        "DELETE"
-      ],
-      "DownstreamPathTemplate": "/api/Comment/DeleteCommentsOnPost/{postId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "CommentService",
-          "Port": 80
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
-      }
-    },
-    {
-      "//FollowedTweetsService": "FollowedTweetsService",
-      "UpstreamPathTemplate": "/api/FollowedTweets",
-      "UpstreamHttpMethod": [
-        "GET",
-        "POST"
-      ],
-      "DownstreamPathTemplate": "/api/FollowedTweets",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "FollowedTweetsService",
-          "Port": 80
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
-      }
-    },
-    {
-      "UpstreamPathTemplate": "/api/FollowedTweets/{id}",
-      "UpstreamHttpMethod": [
-        "DELETE"
-      ],
-      "DownstreamPathTemplate": "/api/FollowedTweets/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "FollowedTweetsService",
-          "Port": 80
-        }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "dev",
-        "AllowedScopes": [
-        ]
+        "AllowedScopes": []
       }
     }
   ]

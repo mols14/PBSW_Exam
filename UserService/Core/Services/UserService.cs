@@ -46,4 +46,29 @@ public class UserService : IUserService
         }
         else throw new KeyNotFoundException($"No user with userId: {userId} found");
     }
+    
+    public async Task UpdateUserUpgrades(int userId, List<Upgrade> upgrades)
+    {
+        var user = await _userRepository.GetUserById(userId);
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        foreach (var upgrade in upgrades)
+        {
+            var existingUpgrade = user.Upgrades.FirstOrDefault(u => u.Id == upgrade.Id);
+            if (existingUpgrade != null)
+            {
+                existingUpgrade.Amount = upgrade.Amount;
+            }
+            else
+            {
+                user.Upgrades.Add(upgrade);
+            }
+        }
+
+        await _userRepository.Update(user);
+    }
+    
 }

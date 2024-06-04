@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from "@angular/router";
+import { AuthService } from '../../core/services/auth.service';
+import { UserService } from '../../core/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -11,29 +13,19 @@ export class RegisterPageComponent {
   email: string = '';
   password: string = '';
   error: string = '';
-  loggedIn: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private userService: UserService, private router: Router) {}
 
-  navigateToPage(page: string) {
-    this.router.navigate(['/' + page]);
-  }
-
-  async handleRegister(username: string, email: string, password: string) {
-    try {
-      //TODO: Implement registration logic here
-
-      window.scrollTo(0, 0);
-
-      // Successful registration
-      this.navigateToPage('');
-    } catch (error) {
-      // Handle registration errors
-      console.error('Registration error:', error);
-
-      if ((error as any).code === !null) {
-        this.error = 'Failed to register';
+  handleRegister(username: string, email: string, password: string) {
+    this.authService.register(username, email, password).subscribe(
+      response => {
+        this.router.navigate(['/login-page']); // Navigate to the login page after successful registration
+        this.userService.addUser({ username, email, password, role: 'User', totalScore: 0, upgrades: [] });
+      },
+      error => {
+        this.error = error; // Display the specific error message
+        console.error('Registration error:', error); // Log error to console
       }
-    }
+    );
   }
 }

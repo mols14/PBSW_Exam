@@ -1,15 +1,11 @@
 <div class="clickContainer">
+  <div class="username">{{ username }}</div>
   <button class="logout" (click)="logout()">Logout</button>
   <div>
-    <p class="score">{{user.totalScore}} papers</p>
-    <p class="scorePC">{{calculatePapersPerClick()}} papers per click</p>
+    <p class="score">{{ localScore }} papers</p>
+    <p class="scorePC">{{ calculatePapersPerClick() }} papers per click</p>
   </div>
-  <button class="clickButton" (click)="incrementScore()" (mousedown)="shrinkImage()" (mouseup)="resetImage()"
-          (mouseleave)="resetImage()">
+  <button class="clickButton" (click)="incrementScore()" (mousedown)="shrinkImage()" (mouseup)="resetImage()" (mouseleave)="resetImage()">
     <img src="assets/paper.png" class="paperImage">
   </button>
-</div>
-
-<div class="loginContainer">
-  
 </div>

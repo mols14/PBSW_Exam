@@ -1,5 +1,5 @@
 <div class="upgradesContainer">
-  <div class="upgradeContent" *ngFor="let upgrade of user.upgrades"
+  <div class="upgradeContent" *ngFor="let upgrade of mergedUpgrades"
        (click)="purchaseUpgrade(upgrade.id)"
        [class.clicked]="activeUpgradeId === upgrade.id"
        [class.cannotAfford]="cannotAffordId === upgrade.id">

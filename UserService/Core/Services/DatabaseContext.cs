@@ -21,5 +21,5 @@ public class DatabaseContext : DbContext
     }
     
     public DbSet<User> Users { get; set; }
-    public DbSet<Upgrade> Upgrades { get; set; }
+    
 }

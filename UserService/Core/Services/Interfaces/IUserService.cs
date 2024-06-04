@@ -9,4 +9,5 @@ public interface IUserService
     public Task CreateUser(CreateUserDTO user);
     public Task<PaginatedResult<GetUserDTO>> GetAllUsers(PaginatedDTO dto);
     public Task DeleteUser(int userId);
+    public Task UpdateUserUpgrades(int userId, List<Upgrade> upgrades);
 }

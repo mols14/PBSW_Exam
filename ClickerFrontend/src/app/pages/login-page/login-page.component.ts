@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {Router} from "@angular/router";
+import { AuthService } from '../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -12,28 +13,27 @@ export class LoginPageComponent {
   error: string = '';
   loggedIn: boolean = false;
 
-  constructor( private router: Router) {}
-
-  navigateToPage(page: string) {
-    this.router.navigate(['/' + page]);
+  constructor(private authService: AuthService, private router: Router) {
+    this.checkLoginStatus();
   }
 
-  async handleLogin(email: string, password: string) {
-    try {
+  checkLoginStatus() {
+    this.loggedIn = this.authService.isLoggedIn();
+  }
 
-      //TODO: Implement login logic here
-
-      window.scrollTo(0, 0);
-
-      // Successful login
-      this.navigateToPage('');
-    } catch (error) {
-      // Handle login errors
-      console.error('Login error:', error);
-
-      if ((error as any).code != null) {
-        this.error = 'Wrong Email or password';
+  handleLogin(email: string, password: string) {
+    this.authService.login(email, password).subscribe(
+      response => {
+        this.loggedIn = true;
+        this.router.navigate(['/']); // Navigate to the homepage or any other page
+      },
+      error => {
+        this.error = 'Invalid email or password.';
       }
-    }
+    );
+  }
+
+  navigateToPage(page: string) {
+    this.router.navigate([`/${page}`]);
   }
 }

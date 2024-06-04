@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UserService.Core.Entities;
 using UserService.Core.Services.DTOs;
 using UserService.Core.Services.Interfaces;
 
@@ -46,7 +47,7 @@ public class UserController : ControllerBase
     }   
     
     [HttpGet]
-    [Route("{userId}")]
+    [Route("GetUserById/{userId}")]
     public async Task<IActionResult> GetUserById([FromRoute] int userId)
     {
         try
@@ -60,7 +61,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("{userId}")]
+    [Route("DeleteUser/{userId}")]
     public async Task<IActionResult> DeleteUser([FromRoute] int userId)
     {
         try
@@ -74,6 +75,18 @@ public class UserController : ControllerBase
         }
     }
     
-    //TODO add put method that update upgrades
-    //TODO add put method that update totalScore
+    [HttpPut("UpdateUserUpgrades/{userId}")]
+    public async Task<IActionResult> UpdateUserUpgrades(int userId, [FromBody] List<Upgrade> upgrades)
+    {
+        try
+        {
+            await _userService.UpdateUserUpgrades(userId, upgrades);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+    
 }

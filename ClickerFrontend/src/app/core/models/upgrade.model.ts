@@ -15,3 +15,13 @@ export class Upgrade {
     this.cost = cost;
   }
 }
+
+export class UpgradeSaved {
+  id: number;
+  amount: number;
+
+  constructor(id: number, amount: number) {
+    this.id = id;
+    this.amount = amount;
+  }
+}

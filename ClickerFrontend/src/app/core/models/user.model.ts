@@ -1,4 +1,4 @@
-import { Upgrade } from './upgrade.model';
+import { UpgradeSaved } from './upgrade.model';
 
 export class User {
   id?: number;
@@ -7,7 +7,7 @@ export class User {
   password?: string;
   role: string = "User";
   totalScore: number;
-  upgrades: Upgrade[];
+  upgrades: UpgradeSaved[];
   createdAt?: Date;
   updatedAt?: Date;
 
@@ -15,7 +15,7 @@ export class User {
     username: string,
     email: string,
     totalScore: number,
-    upgrades: Upgrade[],
+    upgrades: UpgradeSaved[],
     password?: string,
     id?: number,
     role?: string,
