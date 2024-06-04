@@ -1,11 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# This workflow will build, test, sign and package a WPF or Windows Forms desktop application
-# built on .NET Core.
-
+# This workflow will build, test and push a Docker image to Docker Hub
 
 name: .NET Core with Docker functionality
 
@@ -32,6 +25,12 @@ jobs:
         run: dotnet build --no-restore
       # - name: Test
       #   run: dotnet test UnitTests --no-build --verbosity normal ## this specifies to use unitTests from the projects own collection
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/dotnet@master
+        continue-on-error: true # ensures the workflow continues even if Snyk finds vulnerabilities (for demo purposes)
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       # Docker build and push steps using docker-compose
       - name: Log in to Docker Hub
