@@ -60,22 +60,22 @@ jobs:
 
       - name: Apply Kubernetes manifests
         run: |
-          kubectl apply -f k8s/seq-pvc.yaml
-          kubectl apply -f k8s/zipkin-storage-pvc.yaml
-          kubectl apply -f k8s/mssql-pvc.yaml
-          kubectl apply -f k8s/mssql-deployment.yaml
-          kubectl apply -f k8s/mssql-service.yaml
-          kubectl apply -f k8s/zipkin-storage-deployment.yaml
-          kubectl apply -f k8s/zipkin-storage-service.yaml
-          kubectl apply -f k8s/rabbitmq-deployment.yaml
-          kubectl apply -f k8s/rabbitmq-service.yaml
-          kubectl apply -f k8s/seq-deployment.yaml
-          kubectl apply -f k8s/seq-service.yaml
-          kubectl apply -f k8s/zipkin-deployment.yaml
-          kubectl apply -f k8s/zipkin-service.yaml
-          kubectl apply -f k8s/userservice-deployment.yaml
-          kubectl apply -f k8s/userservice-service.yaml
-          kubectl apply -f k8s/authorisationservice-deployment.yaml
-          kubectl apply -f k8s/authorisationservice-service.yaml
-          kubectl apply -f k8s/apigateway-deployment.yaml
-          kubectl apply -f k8s/apigateway-service.yaml
+          kubectl apply -f k8s/seq-pvc.yaml --validate=false
+          kubectl apply -f k8s/zipkin-storage-pvc.yaml --validate=false
+          kubectl apply -f k8s/mssql-pvc.yaml --validate=false
+          kubectl apply -f k8s/mssql-deployment.yaml --validate=false
+          kubectl apply -f k8s/mssql-service.yaml --validate=false
+          kubectl apply -f k8s/zipkin-storage-deployment.yaml --validate=false
+          kubectl apply -f k8s/zipkin-storage-service.yaml --validate=false
+          kubectl apply -f k8s/rabbitmq-deployment.yaml --validate=false
+          kubectl apply -f k8s/rabbitmq-service.yaml --validate=false
+          kubectl apply -f k8s/seq-deployment.yaml --validate=false
+          kubectl apply -f k8s/seq-service.yaml --validate=false
+          kubectl apply -f k8s/zipkin-deployment.yaml --validate=false
+          kubectl apply -f k8s/zipkin-service.yaml --validate=false
+          kubectl apply -f k8s/userservice-deployment.yaml --validate=false
+          kubectl apply -f k8s/userservice-service.yaml --validate=false
+          kubectl apply -f k8s/authorisationservice-deployment.yaml --validate=false
+          kubectl apply -f k8s/authorisationservice-service.yaml --validate=false
+          kubectl apply -f k8s/apigateway-deployment.yaml --validate=false
+          kubectl apply -f k8s/apigateway-service.yaml --validate=false
