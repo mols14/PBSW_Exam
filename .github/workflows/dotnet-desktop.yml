@@ -31,6 +31,8 @@ jobs:
         continue-on-error: true # ensures the workflow continues even if Snyk finds vulnerabilities (for demo purposes)
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --file=PBSW_Exam.sln
 
       # Docker build and push steps using docker-compose
       - name: Log in to Docker Hub
