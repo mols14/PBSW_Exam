@@ -47,43 +47,4 @@ jobs:
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml push
 
-      # Set up Kubernetes
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
-
-      - name: Set up Kubeconfig
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
-
-      - name: Set KUBECONFIG env variable
-        run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
-
-      - name: Debug Kubeconfig
-        run: |
-          ls -la $HOME/.kube
-          cat $HOME/.kube/config
-
-      - name: Apply Kubernetes manifests
-        run: |
-          kubectl apply -f k8s/seq-pvc.yaml --validate=false
-          kubectl apply -f k8s/zipkin-storage-pvc.yaml --validate=false
-          kubectl apply -f k8s/mssql-pvc.yaml --validate=false
-          kubectl apply -f k8s/mssql-deployment.yaml --validate=false
-          kubectl apply -f k8s/mssql-service.yaml --validate=false
-          kubectl apply -f k8s/zipkin-storage-deployment.yaml --validate=false
-          kubectl apply -f k8s/zipkin-storage-service.yaml --validate=false
-          kubectl apply -f k8s/rabbitmq-deployment.yaml --validate=false
-          kubectl apply -f k8s/rabbitmq-service.yaml --validate=false
-          kubectl apply -f k8s/seq-deployment.yaml --validate=false
-          kubectl apply -f k8s/seq-service.yaml --validate=false
-          kubectl apply -f k8s/zipkin-deployment.yaml --validate=false
-          kubectl apply -f k8s/zipkin-service.yaml --validate=false
-          kubectl apply -f k8s/userservice-deployment.yaml --validate=false
-          kubectl apply -f k8s/userservice-service.yaml --validate=false
-          kubectl apply -f k8s/authorisationservice-deployment.yaml --validate=false
-          kubectl apply -f k8s/authorisationservice-service.yaml --validate=false
-          kubectl apply -f k8s/apigateway-deployment.yaml --validate=false
-          kubectl apply -f k8s/apigateway-service.yaml --validate=false
+      
