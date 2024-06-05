@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AuthorisationService.Core.Entities;
 using AuthorisationService.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,23 +12,62 @@ namespace AuthorisationService.Controllers;
 public class AuthorisationController : ControllerBase
 {
     private readonly IAuthorisationService _authorisationService;
+    private readonly HttpClient _httpClient;
 
-    public AuthorisationController(IAuthorisationService authorisationService)
+    public AuthorisationController(IAuthorisationService authorisationService, HttpClient httpClient)
     {
         _authorisationService = authorisationService;
+        _httpClient = httpClient;
     }
 
-    [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] CreateAuthorisationDto dto)
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] CreateAuthorisationDto createAuthorisationDto)
     {
         try
         {
-            await _authorisationService.Register(dto);
-            return StatusCode(201, new { message = "Successfully registered" }); // Return JSON response
+            var authorisation = await _authorisationService.Register(createAuthorisationDto);
+            if (authorisation == null)
+            {
+                return BadRequest("Registration failed");
+            }
+
+            // Create user in UserService
+            var userDto = new CreateUserDTO
+            {
+                Username = createAuthorisationDto.Username,
+                Email = createAuthorisationDto.Email,
+                Password = createAuthorisationDto.Password,
+                Upgrades = new List<Upgrade>
+                {
+                    
+                },
+                Totalscore = 0,
+                CreatedAt = DateTime.UtcNow,
+                AuthorisationId = authorisation.Id
+            };
+            
+            // Log the payload
+            Console.WriteLine("Sending payload to UserService: " + JsonSerializer.Serialize(userDto));
+
+            var response = await _httpClient.PostAsJsonAsync("http://userservice:80/api/User/AddUser", userDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Ok(authorisation);
+            }
+            else
+            {
+                // Log response error details
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("UserService response error: " + response.ReasonPhrase);
+                Console.WriteLine("UserService response body: " + responseBody);
+                return StatusCode(500, "User creation failed");
+            }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return BadRequest(new { error = e.Message }); // Return JSON error response
+            Console.WriteLine("Exception in Register method: " + ex.Message);
+            return StatusCode(500, ex.Message);
         }
     }
 

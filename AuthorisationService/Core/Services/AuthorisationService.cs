@@ -29,17 +29,18 @@ public class AuthorisationService : IAuthorisationService
         _messageClient = messageClient;
     }
 
-    public async Task Register(CreateAuthorisationDto dto)
+    public async Task<Authorisation> Register(CreateAuthorisationDto dto)
     {
-        var authorisation = await _authorisationRepository.DoesAuthorisationExists(dto.Email);
+        var authorisationExists = await _authorisationRepository.DoesAuthorisationExists(dto.Email);
 
-        if (authorisation) throw new DuplicateNameException("Email already exists");
+        if (authorisationExists)
+        {
+            throw new DuplicateNameException("Email already exists");
+        }
 
         var saltBytes = new byte[32];
-
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(saltBytes);
-
 
         var salt = Convert.ToBase64String(saltBytes);
 
@@ -54,6 +55,8 @@ public class AuthorisationService : IAuthorisationService
 
         await _messageClient.Send(
             new CreateUser("Creating user", dto.Username, dto.Email, newAuthorisation.PasswordHash), "CreateUser");
+
+        return newAuthorisation;
     }
 
     public async Task<AuthenticationToken> Login(LoginDto authorisation)

@@ -1,4 +1,6 @@
-﻿namespace UserService.Core.Entities;
+﻿
+
+namespace UserService.Core.Entities;
 
 public class User
 {
@@ -11,4 +13,7 @@ public class User
     public int Totalscore { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+    
+    // Foreign key for Authorisation
+    public int AuthorisationId { get; set; }
 }

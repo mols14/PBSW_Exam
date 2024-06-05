@@ -1,6 +1,4 @@
-﻿using UserService.Core.Entities;
-
-namespace UserService.Core.Services.DTOs;
+using AuthorisationService.Core.Entities;
 
 public class CreateUserDTO
 {

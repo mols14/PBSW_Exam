@@ -12,7 +12,7 @@ using UserService.Core.Services;
 namespace UserService.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240604172137_InitialCreate")]
+    [Migration("20240605042227_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -53,6 +53,9 @@ namespace UserService.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorisationId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
