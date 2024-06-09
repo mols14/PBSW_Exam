@@ -2,21 +2,30 @@
 using AuthorisationService.Core.Entities;
 using AuthorisationService.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Monitoring;
+using OpenTelemetry.Trace;
 
 namespace AuthorisationService.Core.Repositories;
 
 public class AuthorisationRepository : IAuthorisationRepository
 {
     private readonly DatabaseContext _context;
+    private Tracer _tracer;
 
-    public AuthorisationRepository(DatabaseContext context)
+    public AuthorisationRepository(DatabaseContext context, Tracer tracer)
     {
         _context = context;
+        _tracer = tracer;
     }
 
 
     public async Task Register(Authorisation authorisation)
     {
+        
+        using var activity = _tracer.StartActiveSpan("UserRegistered");
+        
+        Logging.Log.Information("UserRegistered");
+        
         await _context.Authorisations.AddAsync(authorisation);
         await _context.SaveChangesAsync();
     }
@@ -32,6 +41,11 @@ public class AuthorisationRepository : IAuthorisationRepository
 
     public async Task<Authorisation> GetAuthorisationByEmail(string email)
     {
+        
+        using var activity = _tracer.StartActiveSpan("UserLoggedIn");
+        
+        Logging.Log.Information("UserLoggedIn");
+        
         var authorisation = await _context.Authorisations.FirstOrDefaultAsync(a => a.Email == email);
 
         if (authorisation is null) throw new ArgumentException($"No email of {email}");

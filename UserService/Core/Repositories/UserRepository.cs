@@ -2,6 +2,8 @@
 using UserService.Core.Entities;
 using UserService.Core.Repositories.Interfaces;
 using UserService.Core.Services;
+using Monitoring;
+using OpenTelemetry.Trace;
 using UserService.Core.Services.DTOs;
 
 namespace UserService.Core.Repositories;
@@ -10,11 +12,13 @@ public class UserRepository : IUserRepository
 {
     private readonly DatabaseContext _context;
     private readonly List<User> _users;
+    private Tracer _tracer;
 
-    public UserRepository(DatabaseContext context)
+    public UserRepository(DatabaseContext context, Tracer tracer)
     {
         _context = context;
         _users = new List<User>();
+        _tracer = tracer;
     }
 
     public async Task<User> GetUserById(int userId)
@@ -57,12 +61,22 @@ public class UserRepository : IUserRepository
 
     public async Task AddUser(User user)
     {
+        
+        using var activity = _tracer.StartActiveSpan("AddUserToDB");
+        
+        Logging.Log.Information("AddUserToDB");
+        
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
     }
 
     public async Task DeleteUser(int userId)
     {
+        
+        using var activity = _tracer.StartActiveSpan("DeletedUserFromDB");
+        
+        Logging.Log.Information("DeletedUserFromDB");
+        
         var userToBeDeleted = await _context.Users.FindAsync(userId);
         _context.Users.Remove(userToBeDeleted);
         await _context.SaveChangesAsync();
