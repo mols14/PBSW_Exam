@@ -23,10 +23,12 @@ public class CreateUserHandler : BackgroundService
             var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
             var dto = new CreateUserDTO
             {
-                Email = user.Email,
                 Username = user.Username,
+                Email = user.Email,
                 Password = user.Password,
-                CreatedAt = DateTime.Now,
+                Totalscore = user.Totalscore,
+                CreatedAt = DateTime.UtcNow,
+                AuthorisationId = user.AuthorisationId
             };
 
             await userService.CreateUser(dto);

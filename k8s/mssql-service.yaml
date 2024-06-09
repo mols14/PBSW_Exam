@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: mssql-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: mssql
   ports:

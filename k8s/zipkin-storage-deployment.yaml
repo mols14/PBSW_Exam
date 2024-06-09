@@ -14,16 +14,22 @@ spec:
     spec:
       containers:
         - name: zipkin-storage
-          image: openzipkin/zipkin-mysql
+          image: mariadb:latest
           ports:
             - containerPort: 3306
           env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "rootpassword"
+            - name: MYSQL_DATABASE
+              value: "zipkin"
             - name: MYSQL_USER
               value: "zipkin"
+            - name: MYSQL_PASSWORD
+              value: "zipkinpassword"
           volumeMounts:
             - name: zipkin-storage
-              mountPath: /mysql/data
-  volumes:
-    - name: zipkin-storage
-      persistentVolumeClaim:
-        claimName: zipkin-storage-pvc
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: zipkin-storage
+          persistentVolumeClaim:
+            claimName: zipkin-storage-pvc

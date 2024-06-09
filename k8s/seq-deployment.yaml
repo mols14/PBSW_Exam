@@ -17,14 +17,13 @@ spec:
           image: datalust/seq:latest
           ports:
             - containerPort: 5341
-            - containerPort: 80
           env:
             - name: ACCEPT_EULA
               value: "Y"
           volumeMounts:
             - name: seq-storage
               mountPath: /data
-  volumes:
-    - name: seq-storage
-      persistentVolumeClaim:
-        claimName: seq-pvc
+      volumes:
+        - name: seq-storage
+          persistentVolumeClaim:
+            claimName: seq-pvc

@@ -54,8 +54,9 @@ public class AuthorisationService : IAuthorisationService
         await _authorisationRepository.Register(newAuthorisation);
 
         await _messageClient.Send(
-            new CreateUser("Creating user", dto.Username, dto.Email, newAuthorisation.PasswordHash), "CreateUser");
-
+            new CreateUser("Creating user", dto.Username, dto.Email, dto.Password,
+                dto.Totalscore, dto.CreatedAt, dto.AuthorisationId ), "CreateUser");
+        
         return newAuthorisation;
     }
 
