@@ -18,6 +18,11 @@
         </PackageReference>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="OpenTelemetry" Version="1.7.0"/>
+        <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.7.0"/>
+        <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="1.7.0"/>
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.7.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.7.1"/>
     </ItemGroup>
 
     <ItemGroup>

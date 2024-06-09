@@ -4,6 +4,8 @@ using System.Text.Json.Serialization;
 using AuthorisationService.Core.Entities;
 using AuthorisationService.Core.Services;
 using Microsoft.AspNetCore.Mvc;
+using Monitoring;
+using Polly;
 
 namespace AuthorisationService.Controllers;
 
@@ -21,55 +23,68 @@ public class AuthorisationController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] CreateAuthorisationDto createAuthorisationDto)
+public async Task<IActionResult> Register([FromBody] CreateAuthorisationDto createAuthorisationDto)
+{
+    try
     {
-        try
+        var authorisation = await _authorisationService.Register(createAuthorisationDto);
+        if (authorisation == null)
         {
-            var authorisation = await _authorisationService.Register(createAuthorisationDto);
-            if (authorisation == null)
-            {
-                return BadRequest("Registration failed");
-            }
-
-            // Create user in UserService
-            var userDto = new CreateUserDTO
-            {
-                Username = createAuthorisationDto.Username,
-                Email = createAuthorisationDto.Email,
-                Password = createAuthorisationDto.Password,
-                Upgrades = new List<Upgrade>
-                {
-                    
-                },
-                Totalscore = 0,
-                CreatedAt = DateTime.UtcNow,
-                AuthorisationId = authorisation.Id
-            };
-            
-            // Log the payload
-            Console.WriteLine("Sending payload to UserService: " + JsonSerializer.Serialize(userDto));
-
-            var response = await _httpClient.PostAsJsonAsync("http://userservice:80/api/User/AddUser", userDto);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return Ok(authorisation);
-            }
-            else
-            {
-                // Log response error details
-                var responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("UserService response error: " + response.ReasonPhrase);
-                Console.WriteLine("UserService response body: " + responseBody);
-                return StatusCode(500, "User creation failed");
-            }
+            return BadRequest("Registration failed");
         }
-        catch (Exception ex)
+
+        // Create user in UserService
+        var userDto = new CreateUserDTO
         {
-            Console.WriteLine("Exception in Register method: " + ex.Message);
-            return StatusCode(500, ex.Message);
+            Username = createAuthorisationDto.Username,
+            Email = createAuthorisationDto.Email,
+            Password = createAuthorisationDto.Password,
+            Upgrades = new List<Upgrade>
+            {
+                
+            },
+            Totalscore = 0,
+            CreatedAt = DateTime.UtcNow,
+            AuthorisationId = authorisation.Id
+        };
+
+        // Log the payload
+        Console.WriteLine("Sending payload to UserService: " + JsonSerializer.Serialize(userDto));
+
+        // Define the retry policy using Polly
+        var retryPolicy = Policy
+            .Handle<HttpRequestException>()
+            .OrResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
+            .RetryAsync(3, onRetry: (outcome, retryCount, context) =>
+            {
+                Logging.Log.Error($"Failed to connect to UserService. Retrying... Attempt {retryCount}");
+                Console.WriteLine($"Failed due to {outcome.Exception?.Message ?? outcome.Result.ReasonPhrase}. Retrying... Attempt {retryCount}");
+            });
+
+        // Execute the HTTP call with the retry policy
+        var response = await retryPolicy.ExecuteAsync(() =>
+            _httpClient.PostAsJsonAsync("http://userservice:80/api/User/AddUser", userDto)
+        );
+
+        if (response.IsSuccessStatusCode)
+        {
+            return Ok(authorisation);
+        }
+        else
+        {
+            // Log response error details
+            var responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("UserService response error: " + response.ReasonPhrase);
+            Console.WriteLine("UserService response body: " + responseBody);
+            return StatusCode(500, "User creation failed");
         }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Exception in Register method: " + ex.Message);
+        return StatusCode(500, ex.Message);
+    }
+}
 
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)

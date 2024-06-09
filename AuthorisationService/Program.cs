@@ -1,12 +1,19 @@
 using AuthorisationService.Core.Helper;
 using AuthorisationService.Core.Repositories;
 using AuthorisationService.Core.Services;
+using Monitoring;
+using OpenTelemetry.Trace;
 using EasyNetQ;
 using Messaging;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var serviceName = "MyTracer";
+var serviceVersion = "1.0.0";
+
+builder.Services.AddOpenTelemetry().Setup();
+builder.Services.AddSingleton(TracerProvider.Default.GetTracer(serviceName));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
