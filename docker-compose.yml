@@ -61,8 +61,14 @@ services:
       context: .
       dockerfile: ./UserService/Dockerfile
     depends_on:
-      - authorisationservice
-      - user-db
+      authorisationservice:
+        condition: service_started
+      user-db:
+        condition: service_started
+      zipkin:
+        condition: service_started
+      zipkin-storage:
+        condition: service_started
     ports:
       - "9093:80"
     networks:
@@ -111,6 +117,7 @@ volumes:
   seq_data:
   zipkin_data:
   mssql_data_user_db:
+  mssql_data_db:
 networks:
   local_network:
     driver: bridge      

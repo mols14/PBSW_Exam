@@ -58,7 +58,8 @@ public async Task<IActionResult> Register([FromBody] CreateAuthorisationDto crea
             .RetryAsync(3, onRetry: (outcome, retryCount, context) =>
             {
                 Logging.Log.Error($"Failed to connect to UserService. Retrying... Attempt {retryCount}");
-                Console.WriteLine($"Failed due to {outcome.Exception?.Message ?? outcome.Result.ReasonPhrase}. Retrying... Attempt {retryCount}");
+                Console.WriteLine($"Failed due to {outcome.Exception?.Message ?? outcome.Result.ReasonPhrase}. " +
+                                  $"Retrying... Attempt {retryCount}");
             });
 
         // Execute the HTTP call with the retry policy
