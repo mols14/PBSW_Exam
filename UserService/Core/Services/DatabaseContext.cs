@@ -10,7 +10,7 @@ public class DatabaseContext : DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=user-db;Database=userDb;User Id=SA;Password=uhohst1nky!;Trusted_Connection=False;TrustServerCertificate=True;");
+        optionsBuilder.UseSqlServer("Server=localhost;Database=userDb;User Id=SA;Password=uhohst1nky!;Trusted_Connection=False;TrustServerCertificate=True;");
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
