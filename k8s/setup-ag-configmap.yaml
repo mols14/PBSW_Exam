@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: setup-ag-configmap
+data:
+  setup-ag.sql: |
+    -- Enable advanced options
+    EXEC sp_configure 'show advanced options', 1;
+    RECONFIGURE;
+    GO
+    EXEC sp_configure 'availability groups', 1;
+    RECONFIGURE;
+    GO
+
+    -- Create the availability group
+    CREATE AVAILABILITY GROUP [AGUsers]
+    WITH (AUTOMATED_BACKUP_PREFERENCE = SECONDARY)
+    FOR DATABASE [userdb]
+    REPLICA ON
+        N'mssql-0' WITH (
+            ENDPOINT_URL = N'TCP://mssql-0:5022', 
+            FAILOVER_MODE = AUTOMATIC,
+            AVAILABILITY_MODE = SYNCHRONOUS_COMMIT,
+            BACKUP_PRIORITY = 50,
+            SEEDING_MODE = AUTOMATIC
+        ),
+        N'mssql-1' WITH (
+            ENDPOINT_URL = N'TCP://mssql-1:5022', 
+            FAILOVER_MODE = AUTOMATIC,
+            AVAILABILITY_MODE = SYNCHRONOUS_COMMIT,
+            BACKUP_PRIORITY = 50,
+            SEEDING_MODE = AUTOMATIC
+        );
+    GO
+
+    -- Add database to availability group
+    ALTER AVAILABILITY GROUP [AGUsers] ADD DATABASE [userdb];
+    GO
+
+    -- Create the listener
+    CREATE AVAILABILITY GROUP [AGUsers]
+    LISTENER N'AGListener' (
+        WITH IP
+        (N'IPAddress' = '10.0.0.10', N'IPAddress' = '10.0.0.11')
+        PORT = 1433);
+    GO

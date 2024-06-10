@@ -1,6 +1,19 @@
 ﻿version: '3.7'
 
 services:
+  
+  clcikerui:
+    image: mols14/clickerui:latest
+    ports:
+      - "8070:80"
+    build:
+      context: .
+      dockerfile: ./ClickerFrontend/Dockerfile
+    volumes:
+      - ./ClickerFrontend/src:/app/src:delegated
+    depends_on:
+      - userservice
+      - authorisationservice
 
   rabbitmq:
     image: rabbitmq:3-management-alpine

@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: setup-ag-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: setup-ag
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          command: ["/bin/bash", "-c", "apt-get update --allow-releaseinfo-change && apt-get install -y --allow-unauthenticated mssql-tools unixodbc-dev && /opt/mssql-tools/bin/sqlcmd -S mssql-0 -U sa -P 'uhohst1nky!' -i /path/to/setup-ag.sql"]
+          volumeMounts:
+            - name: setup-ag-script
+              mountPath: /path/to/
+          securityContext:
+            runAsUser: 0
+      restartPolicy: Never
+      volumes:
+        - name: setup-ag-script
+          configMap:
+            name: setup-ag-configmap
