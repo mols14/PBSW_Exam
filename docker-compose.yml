@@ -2,7 +2,7 @@
 
 services:
   
-  clcikerui:
+  clickerui:
     image: mols14/clicker:latest
     ports:
       - "8070:80"
